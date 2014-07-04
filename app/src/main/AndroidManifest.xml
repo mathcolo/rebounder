@@ -26,7 +26,8 @@
 
         <activity
             android:name="com.prestonmueller.rebounder.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +43,8 @@
 
         <activity
             android:name="com.prestonmueller.rebounder.FirstRunActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
