@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.util.Log;
 
 public class ModuleBattery implements Module {
 	
@@ -49,8 +50,9 @@ public class ModuleBattery implements Module {
 
 		int rawlevel = batteryIntent.getIntExtra("level", -1);
 		double scale = batteryIntent.getIntExtra("scale", -1);
+
         int plugged = batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        boolean charging = plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
+        boolean charging = (plugged == BatteryManager.BATTERY_PLUGGED_AC) || (plugged == BatteryManager.BATTERY_PLUGGED_USB);
 
 		double level = -1;
 		if (rawlevel >= 0 && scale > 0) {
@@ -62,7 +64,7 @@ public class ModuleBattery implements Module {
         String response = levelInt + "%";
         if(charging) response += " (Charging)";
 
-		caller.sendResponse(sender, levelInt + "%", c);
+		caller.sendResponse(sender, response, c);
 		
 	}
 
