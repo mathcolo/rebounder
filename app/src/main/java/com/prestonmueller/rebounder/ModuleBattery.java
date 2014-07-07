@@ -62,7 +62,9 @@ public class ModuleBattery implements Module {
 		int levelInt = (int)level;
 
         String response = levelInt + "%";
-        if(charging) response += " (Charging)";
+
+        if(charging && levelInt == 100) response += " (Charged)";
+        else if(charging) response += " (Charging)";
 
 		caller.sendResponse(sender, response, c);
 		
