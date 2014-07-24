@@ -3,13 +3,15 @@ package com.prestonmueller.rebounder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.BatteryManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ModuleBattery implements Module {
 	
 	public String triggerString() {
-		return "battery";
+		return "#battery";
 	}
 	
 	@Override
@@ -33,8 +35,12 @@ public class ModuleBattery implements Module {
 	}
 
 	@Override
-	public boolean runCheck(String message, String prefix) {
-		if(message.contains(prefix + triggerString())) return true;
+	public boolean runCheck(String message, Context c) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        String triggerCode = sharedPreferences.getString("module_triggerCode_" + name(), triggerString());
+
+		if(message.contains(triggerCode)) return true;
 		return false;
 	}
 

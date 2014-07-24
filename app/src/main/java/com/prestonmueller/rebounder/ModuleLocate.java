@@ -7,8 +7,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -26,7 +28,7 @@ public class ModuleLocate implements Module, GooglePlayServicesClient.Connection
 	private int numberOfUpdates = 0;
 
 	public String triggerString() {
-		return "locate";
+		return "#locate";
 	}
 	
 	@Override
@@ -48,10 +50,15 @@ public class ModuleLocate implements Module, GooglePlayServicesClient.Connection
 	public String description() {
 		return "The GPS Location module polls your phone's current GPS location and responds with a Google Maps link. Requires an enabled GPS or high accuracy mode in Android 4.4 KitKat.";
 	}
-	
-	@Override
-	public boolean runCheck(String message, String prefix) {
-        return message.contains(prefix + triggerString());
+
+    @Override
+    public boolean runCheck(String message, Context c) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        String triggerCode = sharedPreferences.getString("module_triggerCode_" + name(), triggerString());
+
+        if(message.contains(triggerCode)) return true;
+        return false;
     }
 
 	@Override

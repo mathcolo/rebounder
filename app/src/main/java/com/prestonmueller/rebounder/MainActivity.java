@@ -3,14 +3,21 @@ package com.prestonmueller.rebounder;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,9 +48,10 @@ public class MainActivity extends Activity {
         for(Module m : modules) {
         	
         	final String moduleName = m.name();
+            final String moduleTrigger = m.triggerString();
         	
         	boolean enabled = sharedPreferences.getBoolean("module_enabled_" + m.name(), false);
-        	
+
         	LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, null);
 
@@ -52,9 +60,38 @@ public class MainActivity extends Activity {
 
         	TextView description = (TextView)newCard.findViewById(R.id.moduleCardDescription);
         	description.setText(m.description());
-        	
-        	TextView trigger = (TextView)newCard.findViewById(R.id.moduleCardTrigger);
-        	trigger.setText("#" + m.triggerString());
+
+            String currentTrigger = sharedPreferences.getString("module_triggerCode_" + m.name(), m.triggerString());
+        	final TextView trigger = (TextView)newCard.findViewById(R.id.moduleCardTrigger);
+            setTextViewUnderlineText(trigger, currentTrigger);
+
+            trigger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final EditText modifyField = new EditText(MainActivity.this);
+
+                    modifyField.setText(sharedPreferences.getString("module_triggerCode_" + moduleName, moduleTrigger));
+
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Modify trigger code")
+                            .setMessage("(case sensitive)")
+                            .setView(modifyField)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    String newCode = modifyField.getText().toString();
+                                    if(newCode == null || newCode == "")newCode = moduleTrigger;
+
+                                    sharedPreferences.edit().putString("module_triggerCode_" + moduleName, newCode).commit();
+                                    setTextViewUnderlineText(trigger, newCode);
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                }
+                            })
+                            .show();
+                }
+            });
         	
         	final CheckBox enabledUI = (CheckBox)newCard.findViewById(R.id.enabled);
         	enabledUI.setChecked(enabled);
@@ -75,5 +112,14 @@ public class MainActivity extends Activity {
         	cardList.addView(newCard, 2, layoutParams);
         	
         }
+    }
+
+    private void setTextViewUnderlineText(TextView t, String s) {
+        String truncated = s.substring(0, Math.min(s.length(), 10));
+        if(!truncated.equals(s))truncated += "...";
+
+        //final SpannableString ss = new SpannableString(truncated);
+        //ss.setSpan(new UnderlineSpan(), 0, ss.length(), 0);
+        t.setText(truncated);
     }
 }

@@ -32,8 +32,7 @@ public class RebounderReceiver extends BroadcastReceiver {
 			sender = sms[n].getOriginatingAddress();
 			content = sms[n].getMessageBody();
 		}
-		
-		String prefix = "#"; //TODO: Should be set by user preferences
+
 		ArrayList<Module> modules = new ArrayList<Module>();
 		modules.add(new ModuleBattery()); //TODO: Test modules
 		modules.add(new ModuleLocate());
@@ -41,7 +40,7 @@ public class RebounderReceiver extends BroadcastReceiver {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		for(Module m : modules) {
-			if(sharedPreferences.getBoolean("module_enabled_" + m.name(), false) && m.runCheck(content, prefix)) {
+			if(sharedPreferences.getBoolean("module_enabled_" + m.name(), false) && m.runCheck(content, context)) {
 				m.commence(sender, content, context, this);
 				break;
 			}

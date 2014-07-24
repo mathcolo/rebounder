@@ -10,7 +10,7 @@ public interface Module {
 	public String description();
 
 	public String triggerString();
-	public boolean runCheck(String message, String prefix);
+	public boolean runCheck(String message, Context c);
 	
 	public void commence(String sender, String message, Context c, RebounderReceiver caller);
 	
