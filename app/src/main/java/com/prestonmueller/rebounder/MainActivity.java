@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -48,24 +49,22 @@ public class MainActivity extends Activity {
         for(Module m : modules) {
         	
         	final String moduleName = m.name();
-            final String moduleTrigger = m.triggerString();
+            final String moduleTrigger = sharedPreferences.getString("module_triggerCode_" + m.name(), m.triggerString());
         	
         	boolean enabled = sharedPreferences.getBoolean("module_enabled_" + m.name(), false);
 
         	LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, null);
 
-        	TextView name = (TextView)newCard.findViewById(R.id.moduleCardName);
-        	name.setText(m.name());
+        	final TextView name = (TextView)newCard.findViewById(R.id.moduleCardName);
+        	name.setText(m.name() + " (" + moduleTrigger + ")");
 
         	TextView description = (TextView)newCard.findViewById(R.id.moduleCardDescription);
         	description.setText(m.description());
 
-            String currentTrigger = sharedPreferences.getString("module_triggerCode_" + m.name(), m.triggerString());
-        	final TextView trigger = (TextView)newCard.findViewById(R.id.moduleCardTrigger);
-            setTextViewUnderlineText(trigger, currentTrigger);
+            final Button editButton = (Button)newCard.findViewById(R.id.editButton);
 
-            trigger.setOnClickListener(new View.OnClickListener() {
+            editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final EditText modifyField = new EditText(MainActivity.this);
@@ -82,7 +81,7 @@ public class MainActivity extends Activity {
                                     if(newCode == null || newCode == "")newCode = moduleTrigger;
 
                                     sharedPreferences.edit().putString("module_triggerCode_" + moduleName, newCode).commit();
-                                    setTextViewUnderlineText(trigger, newCode);
+                                    name.setText(moduleName + " (" + newCode + ")");
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

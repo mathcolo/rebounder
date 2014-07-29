@@ -12,18 +12,20 @@
     <CheckBox
         android:id="@+id/enabled"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+        />
     
     <TextView
         android:id="@+id/moduleCardName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/enabled"
         android:layout_toRightOf="@+id/enabled"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="3dp"
         android:text="MODULE NAME"
         android:textColor="#909090"
-        android:textSize="21sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/moduleCardDescription"
@@ -36,14 +38,17 @@
         android:textColor="#909090"
         android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/moduleCardTrigger"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:layout_width="55dp"
+        android:id="@+id/editButton"
+        android:text="Edit"
+        android:textSize="16sp"
+        android:textColor="#909090"
+        android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="3dp"
-        android:text="#TR"
-        android:textColor="#909090"
-        android:textSize="13sp" />
+        android:background="@drawable/editbuttonselector"
+        />
+
 
 </RelativeLayout>
