@@ -34,6 +34,7 @@ public class RebounderReceiver extends BroadcastReceiver {
 
 		ArrayList<Module> modules = new ArrayList<Module>();
         //modules.add(new ModuleLocateCampus());
+		modules.add(new ModuleETA());
         modules.add(new ModuleLastSeen());
 		modules.add(new ModuleBattery()); //TODO: Test modules
 		modules.add(new ModuleLocate());

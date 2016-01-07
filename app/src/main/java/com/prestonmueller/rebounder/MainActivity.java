@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 
         ArrayList<Module> modules = new ArrayList<Module>();
         //modules.add(new ModuleLocateCampus());
+        modules.add(new ModuleETA());
         modules.add(new ModuleLastSeen());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());
