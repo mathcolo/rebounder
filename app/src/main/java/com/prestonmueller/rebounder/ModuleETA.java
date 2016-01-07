@@ -61,7 +61,7 @@ public class ModuleETA implements Module, GooglePlayServicesClient.ConnectionCal
 
     @Override
     public String description() {
-        return "Provides the ETA to the destination specified after the trigger code. For example: #eta Nashua, NH";
+        return "Provides the driving ETA (estimated time to arrival) to the destination specified after the trigger code, traffic included. For example: #eta Nashua, NH";
     }
 
     @Override

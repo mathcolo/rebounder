@@ -8,7 +8,7 @@ android {
         applicationId "com.prestonmueller.rebounder"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 15
+        versionCode 16
         versionName "1.1.4"
     }
     buildTypes {
