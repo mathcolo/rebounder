@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.InputFilter;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -30,18 +28,27 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
 
         boolean previouslyStarted = sharedPreferences.getBoolean(getString(R.string.previouslyStartedflag), false);
-        if(!previouslyStarted){
+        if(!previouslyStarted) {
+
             SharedPreferences.Editor edit = sharedPreferences.edit();
-            edit.putBoolean(getString(R.string.previouslyStartedflag), true).apply();
-            edit.putBoolean("module_enabled_Battery", true).apply();
+
+            edit.putBoolean(getString(R.string.previouslyStartedflag), true);
+            edit.putBoolean("module_enabled_Battery", true);
+            edit.putBoolean("module_enabled_GPSLocation", false);
+            edit.putBoolean("module_enabled_LastSeen", false);
+
+            edit.commit();
+
             Intent intent = new Intent(this, FirstRunActivity.class);
             startActivity(intent);
         }
 
         ArrayList<Module> modules = new ArrayList<Module>();
+        modules.add(new ModuleLocateWPI());
+        modules.add(new ModuleLastSeen());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());
         
@@ -50,14 +57,15 @@ public class MainActivity extends Activity {
         	
         	final String moduleName = m.name();
             final String moduleTrigger = sharedPreferences.getString("module_triggerCode_" + m.name(), m.triggerString());
-        	
+
         	boolean enabled = sharedPreferences.getBoolean("module_enabled_" + m.name(), false);
+            Log.d("Rebounder", "Module + " + m.name() + " is" + enabled + " (module" + m.name() + ")");
 
         	LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, null);
+        	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, cardList, false);
 
         	final TextView name = (TextView)newCard.findViewById(R.id.moduleCardName);
-        	name.setText(m.name() + " (" + moduleTrigger + ")");
+        	name.setText(String.format("%s (%s)", m.humanReadableName(), moduleTrigger));
 
         	TextView description = (TextView)newCard.findViewById(R.id.moduleCardDescription);
         	description.setText(m.description());
@@ -69,6 +77,8 @@ public class MainActivity extends Activity {
                 public void onClick(View view) {
                     final EditText modifyField = new EditText(MainActivity.this);
 
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
+
                     modifyField.setText(sharedPreferences.getString("module_triggerCode_" + moduleName, moduleTrigger));
 
                     new AlertDialog.Builder(MainActivity.this)
@@ -78,9 +88,13 @@ public class MainActivity extends Activity {
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     String newCode = modifyField.getText().toString();
-                                    if(newCode == null || newCode == "")newCode = moduleTrigger;
+                                    if(newCode == null || newCode.equals(""))newCode = moduleTrigger;
 
-                                    sharedPreferences.edit().putString("module_triggerCode_" + moduleName, newCode).commit();
+                                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                                    edit.putString("module_triggerCode_" + moduleName, newCode);
+                                    edit.commit();
+
                                     name.setText(moduleName + " (" + newCode + ")");
                                 }
                             })
@@ -99,8 +113,12 @@ public class MainActivity extends Activity {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView,
 						boolean isChecked) {
-					enabledUI.setChecked(isChecked);
-					sharedPreferences.edit().putBoolean("module_enabled_" + moduleName, isChecked).apply();
+
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+					edit.putBoolean("module_enabled_" + moduleName, isChecked);
+                    edit.commit();
+
 				}
         	});
 

@@ -1,23 +1,22 @@
 package com.prestonmueller.rebounder;
 
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 
-public class ModuleLocate implements Module, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class ModuleLocateWPI implements Module, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     LocationClient locationClient;
     LocationRequest locationRequest;
@@ -28,17 +27,17 @@ public class ModuleLocate implements Module, GooglePlayServicesClient.Connection
 	private int numberOfUpdates = 0;
 
 	public String triggerString() {
-		return "#locate";
+		return "#wpi";
 	}
 	
 	@Override
 	public String name() {
-		return "GPSLocation";
+		return "WPILocation";
 	}
 
     @Override
     public String humanReadableName() {
-        return "GPS Location";
+        return "WPI Location";
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ModuleLocate implements Module, GooglePlayServicesClient.Connection
 
 	@Override
 	public String description() {
-		return "The GPS Location module polls your phone's current GPS location and responds with a Google Maps link. Requires an enabled GPS or high accuracy mode in Android 4.4 or newer.";
+		return "The GPS Location module polls your phone's current GPS location and responds with your WPI building location. Requires an enabled GPS or high accuracy mode in Android 4.4 or newer.";
 	}
 
     @Override
@@ -120,7 +119,7 @@ public class ModuleLocate implements Module, GooglePlayServicesClient.Connection
             Format df = new SimpleDateFormat("MMM dd hh:mm a z", Locale.US);
             String dateString = df.format(now);
 
-            url = "As of " + dateString + ":\n\n" + "http://maps.google.com/maps?q=" + "loc:" + lat + ",+" + lon + "\n\nAccuracy: " + accuracyFormatter.format(accuracy) + "m";
+            url = "As of " + dateString + ":\nCampus loc: " + CampusUtilities.locationWPI(location.getLatitude(), location.getLongitude());
 
             caller.sendResponse(sender, url, c);
 

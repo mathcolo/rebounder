@@ -5,6 +5,8 @@ import android.content.Context;
 public interface Module {
 	
 	public String name();
+    public String humanReadableName();
+
 	public String version();
 	public String author();
 	public String description();

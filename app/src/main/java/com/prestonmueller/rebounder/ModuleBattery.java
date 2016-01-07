@@ -18,8 +18,13 @@ public class ModuleBattery implements Module {
 	public String name() {
 		return "Battery";
 	}
-	
-	@Override
+
+    @Override
+    public String humanReadableName() {
+        return "Battery";
+    }
+
+    @Override
 	public String version() {
 		return "1.0";
 	}
@@ -37,7 +42,7 @@ public class ModuleBattery implements Module {
 	@Override
 	public boolean runCheck(String message, Context c) {
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences sharedPreferences = c.getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
         String triggerCode = sharedPreferences.getString("module_triggerCode_" + name(), triggerString());
 
 		if(message.contains(triggerCode)) return true;

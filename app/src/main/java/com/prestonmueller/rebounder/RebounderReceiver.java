@@ -34,10 +34,12 @@ public class RebounderReceiver extends BroadcastReceiver {
 		}
 
 		ArrayList<Module> modules = new ArrayList<Module>();
+        modules.add(new ModuleLocateWPI());
+        modules.add(new ModuleLastSeen());
 		modules.add(new ModuleBattery()); //TODO: Test modules
 		modules.add(new ModuleLocate());
 		
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences sharedPreferences = context.getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
 		
 		for(Module m : modules) {
 			if(sharedPreferences.getBoolean("module_enabled_" + m.name(), false) && m.runCheck(content, context)) {
