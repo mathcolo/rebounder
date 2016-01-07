@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
             edit.putBoolean("module_enabled_Battery", true);
             edit.putBoolean("module_enabled_GPSLocation", false);
             edit.putBoolean("module_enabled_LastSeen", false);
+            edit.putBoolean("module_enabled_CampusLocation", false);
 
             edit.commit();
 
@@ -47,7 +48,7 @@ public class MainActivity extends Activity {
         }
 
         ArrayList<Module> modules = new ArrayList<Module>();
-        modules.add(new ModuleLocateWPI());
+        //modules.add(new ModuleLocateCampus());
         modules.add(new ModuleLastSeen());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());

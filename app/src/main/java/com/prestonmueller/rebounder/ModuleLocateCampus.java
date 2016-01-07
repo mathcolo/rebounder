@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ModuleLocateWPI implements Module, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class ModuleLocateCampus implements Module, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     LocationClient locationClient;
     LocationRequest locationRequest;
@@ -27,17 +27,17 @@ public class ModuleLocateWPI implements Module, GooglePlayServicesClient.Connect
 	private int numberOfUpdates = 0;
 
 	public String triggerString() {
-		return "#wpi";
+		return "#campus";
 	}
 	
 	@Override
 	public String name() {
-		return "WPILocation";
+		return "CampusLocation";
 	}
 
     @Override
     public String humanReadableName() {
-        return "WPI Location";
+        return "Campus Loc.";
     }
 
     @Override

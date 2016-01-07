@@ -39,9 +39,9 @@
         android:textSize="13sp" />
 
     <Button
-        android:layout_width="55dp"
+        android:layout_width="100dp"
         android:id="@+id/editButton"
-        android:text="Edit"
+        android:text="Edit Trigger"
         android:textSize="16sp"
         android:textColor="#909090"
         android:layout_height="25dp"

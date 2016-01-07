@@ -3,7 +3,7 @@
 
     <string name="app_name">Rebounder</string>
     <string name="about_text">This app wants to supercharge mobile messaging. Created by Preston Mueller in Denver, San Francisco, and Worcester. Thanks to those who have helped me test this app, especially Kelly, Morgan, Tyler, and Matt.</string>
-    <string name="about">About Rebounder 1.1.3</string>
+    <string name="about">About Rebounder 1.1.4</string>
     <string name="modules">Modules</string>
     <string name="previouslyStartedflag">previouslyStarted</string>
     <string name="firstrun_explanation">Rebounder responds to SMS messages with particular inquiries on your behalf. In the example module below, your phone can respond to messages that contain "#battery" with your current battery percentage.</string>

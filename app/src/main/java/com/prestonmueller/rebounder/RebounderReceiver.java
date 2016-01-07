@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
@@ -34,7 +33,7 @@ public class RebounderReceiver extends BroadcastReceiver {
 		}
 
 		ArrayList<Module> modules = new ArrayList<Module>();
-        modules.add(new ModuleLocateWPI());
+        //modules.add(new ModuleLocateCampus());
         modules.add(new ModuleLastSeen());
 		modules.add(new ModuleBattery()); //TODO: Test modules
 		modules.add(new ModuleLocate());
