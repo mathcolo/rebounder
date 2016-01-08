@@ -149,7 +149,7 @@ public class ModuleETA implements Module, GooglePlayServicesClient.ConnectionCal
                                 returnSMS += " from now.";
                             }
                             catch(JSONException e) {
-
+                                returnSMS += "ETA could not be calculated, please try again.";
                             }
 
                             caller.sendResponse(sender, returnSMS, c);
