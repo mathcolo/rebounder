@@ -1,14 +1,15 @@
 package com.prestonmueller.rebounder;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +22,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.jar.Manifest;
+
 public class MainActivity extends Activity {
+
+    // ID to identify phone permissions request
+    private static final int REQUEST_READ_PHONE_STATE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { 	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Check permissions
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+        }
         
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
 
