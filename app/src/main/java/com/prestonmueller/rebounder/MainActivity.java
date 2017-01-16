@@ -24,11 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.jar.Manifest;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
     // ID to identify phone permissions request
+    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { 	
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Check permissions
+        if (Build.VERSION.SDK_INT >= 23) {
+            checkAndRequestPermissions();
         }
         
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
@@ -150,5 +153,30 @@ public class MainActivity extends Activity {
         //final SpannableString ss = new SpannableString(truncated);
         //ss.setSpan(new UnderlineSpan(), 0, ss.length(), 0);
         t.setText(truncated);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int permissionPhoneState = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
+        int permissionLocation = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionSendSMS = ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS);
+
+
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (permissionPhoneState != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.READ_PHONE_STATE);
+        }
+        if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (permissionSendSMS != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.SEND_SMS);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+
+        return true;
     }
 }
