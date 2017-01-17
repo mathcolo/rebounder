@@ -2,13 +2,16 @@ package com.prestonmueller.rebounder;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -16,9 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ModuleLocateCampus implements Module, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class ModuleLocateCampus implements Module, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    LocationClient locationClient;
+    GoogleApiClient googleApiClient;
     LocationRequest locationRequest;
     RebounderReceiver caller;
     String sender;
@@ -68,8 +71,9 @@ public class ModuleLocateCampus implements Module, GooglePlayServicesClient.Conn
 	@Override
 	public void commence(final String sender, String message, final Context c,
 			final RebounderReceiver caller) {
-        locationClient = new LocationClient(c, this, this);
-        locationRequest = new LocationRequest();
+
+        googleApiClient = new GoogleApiClient.Builder(c).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+        locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(2000);
         locationRequest.setFastestInterval(2000);
@@ -78,24 +82,26 @@ public class ModuleLocateCampus implements Module, GooglePlayServicesClient.Conn
         this.sender = sender;
         this.c = c;
 
-        locationClient.connect();
+        googleApiClient.connect();
 
 	}
 
     @Override
     public void onConnected(Bundle bundle) {
 
-        locationClient.requestLocationUpdates(locationRequest, this);
-
-    }
-
-    @Override
-    public void onDisconnected() {
+        if (ContextCompat.checkSelfPermission( c, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
 
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
 
     }
 
@@ -123,8 +129,8 @@ public class ModuleLocateCampus implements Module, GooglePlayServicesClient.Conn
 
             caller.sendResponse(sender, url, c);
 
-            locationClient.removeLocationUpdates(this);
-            locationClient.disconnect();
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            googleApiClient.disconnect();
             numberOfUpdates = 0;
         }
 

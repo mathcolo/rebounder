@@ -11,7 +11,7 @@ public class ReceiverLastSeen extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
         SharedPreferences.Editor edit = context.getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE).edit();
-        edit.putLong("lastSeen", System.currentTimeMillis()).commit();
+        edit.putLong("lastSeen", System.currentTimeMillis()).apply();
 	}
 
 
