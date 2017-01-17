@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
             edit.putBoolean("module_enabled_LastSeen", false);
             edit.putBoolean("module_enabled_CampusLocation", false);
 
-            edit.commit();
+            edit.apply();
 
             Intent intent = new Intent(this, FirstRunActivity.class);
             startActivity(intent);
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
                                     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor edit = sharedPreferences.edit();
                                     edit.putString("module_triggerCode_" + moduleName, newCode);
-                                    edit.commit();
+                                    edit.apply();
 
                                     name.setText(moduleName + " (" + newCode + ")");
                                 }
@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
                     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor edit = sharedPreferences.edit();
 					edit.putBoolean("module_enabled_" + moduleName, isChecked);
-                    edit.commit();
+                    edit.apply();
 
 				}
         	});
