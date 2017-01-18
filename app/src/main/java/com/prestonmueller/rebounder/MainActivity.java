@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,10 +78,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Rebounder", "Module + " + m.name() + " is" + enabled + " (module" + m.name() + ")");
 
         	LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, cardList, false);
+        	CardView newCard = (CardView) inflater.inflate(R.layout.modulecard, cardList, false);
 
         	final TextView name = (TextView)newCard.findViewById(R.id.moduleCardName);
-        	name.setText(String.format("%s (%s)", m.humanReadableName(), moduleTrigger));
+        	name.setText(String.format("%s", m.humanReadableName()));
+
+            final TextView triggerName = (TextView)newCard.findViewById(R.id.moduleCardTriggerName);
+            triggerName.setText(String.format("%s", moduleTrigger));
 
         	TextView description = (TextView)newCard.findViewById(R.id.moduleCardDescription);
         	description.setText(m.description());
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                                     edit.putString("module_triggerCode_" + moduleName, newCode);
                                     edit.apply();
 
-                                    name.setText(moduleName + " (" + newCode + ")");
+                                    triggerName.setText(newCode);
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -136,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
 
 				}
         	});
+
+            final LinearLayout newCardTop = (LinearLayout) newCard.findViewById(R.id.moduleCardTop);
+            newCardTop.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    enabledUI.toggle();
+                }
+            });
 
         	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         	int dp12 = (int)(12 * MainActivity.this.getResources().getDisplayMetrics().density);

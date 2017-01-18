@@ -7,13 +7,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#eeeeee" >
+        android:background="#F5F5F5" >
 
         <LinearLayout
             android:id="@+id/cardList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#eeeeee"
+            android:background="#F5F5F5"
             android:orientation="vertical"
             android:paddingBottom="8dp" >
 
@@ -38,14 +38,13 @@
                 android:textColor="#909090"
                 android:textSize="13sp" >
             </TextView>
-            
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/cardui"
                 android:orientation="vertical" >
 
                 <TextView
