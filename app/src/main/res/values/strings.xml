@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Rebounder</string>
-    <string name="about_text">This app wants to supercharge mobile messaging. Created by Preston Mueller in Denver, San Francisco, and Worcester. Thanks to those who have helped me test this app, especially Kelly, Morgan, Tyler, and Matt.</string>
+    <string name="about_text">Created by Preston Mueller in Denver, CO, San Francisco, CA, and Worcester, MA. Sincere thanks to Mikhail Chowdhury for fixing app bugs, and to those friends of mine who always thought this was fun; especially Kelly, Morgan, and Tommy.</string>
     <string name="about">About Rebounder 1.1.5</string>
     <string name="modules">Modules</string>
     <string name="previouslyStartedflag">previouslyStarted</string>
