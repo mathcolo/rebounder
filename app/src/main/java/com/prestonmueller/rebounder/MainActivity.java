@@ -1,6 +1,5 @@
 package com.prestonmueller.rebounder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,11 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -26,7 +26,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     // ID to identify phone permissions request
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
                 }
             });
         	
-        	final CheckBox enabledUI = (CheckBox)newCard.findViewById(R.id.enabled);
+        	final SwitchCompat enabledUI = (SwitchCompat) newCard.findViewById(R.id.enabled);
         	enabledUI.setChecked(enabled);
         	enabledUI.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
