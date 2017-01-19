@@ -75,7 +75,7 @@ public class ModuleETA implements Module, GoogleApiClient.ConnectionCallbacks, G
         SharedPreferences sharedPreferences = c.getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
         String triggerCode = sharedPreferences.getString("module_triggerCode_" + name(), triggerString());
 
-        if(message.contains(triggerCode)) {
+        if(message.contains(triggerCode) && (message.length() > triggerCode.length())) {
 
             destination = message.substring(message.indexOf(triggerCode)+triggerCode.length()+1, message.length());
 
