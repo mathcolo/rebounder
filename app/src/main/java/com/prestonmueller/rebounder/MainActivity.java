@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         modules.add(new ModuleLastSeen());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());
-        
+
         LinearLayout cardList = (LinearLayout)findViewById(R.id.cardList);
         for(Module m : modules) {
         	
@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
 
                     modifyField.setText(sharedPreferences.getString("module_triggerCode_" + moduleName, moduleTrigger));
 
-                    new AlertDialog.Builder(MainActivity.this)
+                    new android.support.v7.app.AlertDialog.Builder(MainActivity.this)
                             .setTitle("Modify trigger code")
                             .setMessage("(case sensitive)")
-                            .setView(modifyField)
+                            .setView(modifyField, 50, 0, 50, 0)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     String newCode = modifyField.getText().toString();
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         	int dp12 = (int)(12 * MainActivity.this.getResources().getDisplayMetrics().density);
         	int dp10 = (int)(10 * MainActivity.this.getResources().getDisplayMetrics().density);
         	layoutParams.setMargins(dp12, dp10, dp12, 0);
-        	cardList.addView(newCard, 2, layoutParams);
+        	cardList.addView(newCard, 1, layoutParams);
         	
         }
     }

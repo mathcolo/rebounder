@@ -2,91 +2,137 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ff737373"
-    tools:context="com.rebounder.FirstRunActivity">
+    android:background="@color/colorPrimaryDark"
+    tools:context=".FirstRunActivity">
 
     <ImageView
         android:id="@+id/rel"
-        android:contentDescription="App icon"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/artwork" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/artwork"
+        android:contentDescription="App icon" />
 
     <TextView
         android:id="@+id/textView3"
+        style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rel"
-        android:layout_marginBottom="40dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white" />
 
     <TextView
-        android:padding="10dp"
+        android:id="@+id/textView4"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3"
+        android:gravity="center"
+        android:padding="10dp"
         android:text="@string/firstrun_explanation"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="16sp" />
+
 
     <RelativeLayout
         android:id="@+id/moduleCard"
         android:layout_width="fill_parent"
-        android:layout_height="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/textView4">
+        android:layout_marginTop="10dp">
 
-        <CheckBox
-            android:id="@+id/enabled"
-            android:clickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/moduleCardName"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/enabled"
-            android:layout_marginBottom="20dp"
-            android:text="Battery (#battery)"
-            android:textColor="#909090"
-            android:textSize="21sp" />
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="2dp">
 
-        <TextView
-            android:id="@+id/moduleCardDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/moduleCardName"
-            android:layout_marginTop="3dp"
-            android:text="The battery module allows your phone to be queried for its battery level. Responds with a value like 25% or 71%."
-            android:textColor="#909090"
-            android:textSize="13sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:id="@+id/moduleCardTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="16dp">
+
+                        <TextView
+                            android:id="@+id/moduleCardName"
+                            style="@style/Base.TextAppearance.AppCompat.Headline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Battery" />
+
+                        <TextView
+                            android:id="@+id/moduleCardTriggerName"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/moduleCardName"
+                            android:alpha="0.54"
+                            android:text="#battery" />
+
+                        <TextView
+                            android:id="@+id/moduleCardDescription"
+                            style="@style/Base.TextAppearance.AppCompat.Caption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/moduleCardName"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="30dp"
+                            android:text="The battery module allows your phone to be queried for its battery level. Responds with a value like 25% or 71%." />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/enabled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerVertical="true"
+                            android:clickable="false"
+                            android:checked="true"/>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 
     <Button
+        android:id="@+id/getgoing"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"
-        android:textColor="@android:color/white"
-        android:id="@+id/getgoing"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:text="Get Started"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
