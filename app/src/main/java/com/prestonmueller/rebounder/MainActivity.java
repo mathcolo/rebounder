@@ -1,6 +1,5 @@
 package com.prestonmueller.rebounder;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,11 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     // ID to identify phone permissions request
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
@@ -66,7 +67,7 @@ public class MainActivity extends Activity {
         modules.add(new ModuleLastSeen());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());
-        
+
         LinearLayout cardList = (LinearLayout)findViewById(R.id.cardList);
         for(Module m : modules) {
         	
@@ -77,10 +78,13 @@ public class MainActivity extends Activity {
             Log.d("Rebounder", "Module + " + m.name() + " is" + enabled + " (module" + m.name() + ")");
 
         	LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        	RelativeLayout newCard = (RelativeLayout) inflater.inflate(R.layout.modulecard, cardList, false);
+        	CardView newCard = (CardView) inflater.inflate(R.layout.modulecard, cardList, false);
 
         	final TextView name = (TextView)newCard.findViewById(R.id.moduleCardName);
-        	name.setText(String.format("%s (%s)", m.humanReadableName(), moduleTrigger));
+        	name.setText(String.format("%s", m.humanReadableName()));
+
+            final TextView triggerName = (TextView)newCard.findViewById(R.id.moduleCardTriggerName);
+            triggerName.setText(String.format("%s", moduleTrigger));
 
         	TextView description = (TextView)newCard.findViewById(R.id.moduleCardDescription);
         	description.setText(m.description());
@@ -96,10 +100,10 @@ public class MainActivity extends Activity {
 
                     modifyField.setText(sharedPreferences.getString("module_triggerCode_" + moduleName, moduleTrigger));
 
-                    new AlertDialog.Builder(MainActivity.this)
+                    new android.support.v7.app.AlertDialog.Builder(MainActivity.this)
                             .setTitle("Modify trigger code")
                             .setMessage("(case sensitive)")
-                            .setView(modifyField)
+                            .setView(modifyField, 50, 0, 50, 0)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     String newCode = modifyField.getText().toString();
@@ -110,7 +114,7 @@ public class MainActivity extends Activity {
                                     edit.putString("module_triggerCode_" + moduleName, newCode);
                                     edit.apply();
 
-                                    name.setText(moduleName + " (" + newCode + ")");
+                                    triggerName.setText(newCode);
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -121,7 +125,7 @@ public class MainActivity extends Activity {
                 }
             });
         	
-        	final CheckBox enabledUI = (CheckBox)newCard.findViewById(R.id.enabled);
+        	final SwitchCompat enabledUI = (SwitchCompat) newCard.findViewById(R.id.enabled);
         	enabledUI.setChecked(enabled);
         	enabledUI.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -137,11 +141,18 @@ public class MainActivity extends Activity {
 				}
         	});
 
+            final LinearLayout newCardTop = (LinearLayout) newCard.findViewById(R.id.moduleCardTop);
+            newCardTop.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    enabledUI.toggle();
+                }
+            });
+
         	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         	int dp12 = (int)(12 * MainActivity.this.getResources().getDisplayMetrics().density);
         	int dp10 = (int)(10 * MainActivity.this.getResources().getDisplayMetrics().density);
         	layoutParams.setMargins(dp12, dp10, dp12, 0);
-        	cardList.addView(newCard, 2, layoutParams);
+        	cardList.addView(newCard, 1, layoutParams);
         	
         }
     }
