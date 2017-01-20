@@ -1,6 +1,7 @@
 package com.prestonmueller.rebounder;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             edit.putBoolean("module_enabled_GPSLocation", false);
             edit.putBoolean("module_enabled_LastSeen", false);
             edit.putBoolean("module_enabled_CampusLocation", false);
+            edit.putBoolean("module_enabled_LoudRinger", false);
 
             edit.apply();
 
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //modules.add(new ModuleLocateCampus());
         modules.add(new ModuleETA());
         modules.add(new ModuleLastSeen());
+        modules.add(new ModuleLoudRinger());
         modules.add(new ModuleBattery());
         modules.add(new ModuleLocate());
 
@@ -186,6 +189,19 @@ public class MainActivity extends AppCompatActivity {
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
             return false;
+        }
+
+        NotificationManager notificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+            startActivity(intent);
         }
 
         return true;
