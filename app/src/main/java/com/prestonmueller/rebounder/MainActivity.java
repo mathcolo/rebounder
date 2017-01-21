@@ -177,9 +177,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         List<String> listPermissionsNeeded = new ArrayList<>();
-        if (permissionPhoneState != PackageManager.PERMISSION_GRANTED) {
+        /*if (permissionPhoneState != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.READ_PHONE_STATE);
         }
+        */
+
         if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }

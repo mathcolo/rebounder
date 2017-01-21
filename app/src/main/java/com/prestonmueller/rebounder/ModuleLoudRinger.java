@@ -1,8 +1,10 @@
 package com.prestonmueller.rebounder;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.Build;
 
 /**
  * Created by prestonmueller on 1/20/17.
@@ -51,9 +53,20 @@ public class ModuleLoudRinger implements Module {
     @Override
     public void commence(String sender, String message, Context c, RebounderReceiver caller) {
 
-        AudioManager manager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
-        manager.setStreamVolume(AudioManager.STREAM_RING, manager.getStreamMaxVolume(AudioManager.STREAM_RING), 0);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
+            }
 
-        caller.sendResponse(sender, "Ringer set to maximum volume.", c);
+            AudioManager manager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+            manager.setStreamVolume(AudioManager.STREAM_RING, manager.getStreamMaxVolume(AudioManager.STREAM_RING), 0);
+
+            caller.sendResponse(sender, "Ringer set to maximum volume.", c);
+        }
+        catch (Exception e) {
+            caller.sendResponse(sender, "Failed to set ringer to maximum volume, or pull phone out of Do Not Disturb mode.", c);
+        }
+
     }
 }
