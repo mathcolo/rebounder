@@ -136,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
 				public void onCheckedChanged(CompoundButton buttonView,
 						boolean isChecked) {
 
+                    if(moduleName.equals("LoudRinger")) {
+                        NotificationManager notificationManager =
+                                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                                && !notificationManager.isNotificationPolicyAccessGranted()) {
+                            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                            startActivity(intent);
+                        }
+                    }
+
                     SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("rebounderPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor edit = sharedPreferences.edit();
 					edit.putBoolean("module_enabled_" + moduleName, isChecked);
@@ -191,19 +201,6 @@ public class MainActivity extends AppCompatActivity {
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
             return false;
-        }
-
-        NotificationManager notificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-
-            Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
-            startActivity(intent);
         }
 
         return true;
