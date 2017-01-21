@@ -33,7 +33,7 @@ public class ModuleLoudRinger implements Module {
 
     @Override
     public String description() {
-        return "Loud Ringer sets the ringer volume of your phone to 100%. Helpful if you lose it!";
+        return "Loud Ringer sets the ringer volume of your phone to 100%. Helpful if you lose it! Requires notification policy access. If you need to grant it, press Back to return to Rebounder.";
     }
 
     @Override
